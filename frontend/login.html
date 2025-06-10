@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZenTask Login</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="login-body">
+  <div class="form-container">
+    <form class="login-form" id="loginForm">
+      <h2>Login to <span>ZenTask</span></h2>
+      <div class="input-group">
+        <input type="text" name="username" required />
+        <label>Username</label>
+      </div>
+      <div class="input-group">
+        <input type="password" name="password" required />
+        <label>Password</label>
+      </div>
+      <button type="submit" class="btn login-btn">Login</button>
+      <p class="toggle-link">Don't have an account? <a href="register.html">Register</a></p>
+    </form>
+  </div>
+  <audio id="loginSound" src="click.mp3" preload="auto"></audio>
+  <script>
+    document.querySelector('.login-form').addEventListener('submit', function(e) {
+      document.getElementById('loginSound').play();
+    });
+  </script>
+</body>
+</html>

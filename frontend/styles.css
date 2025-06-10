@@ -1,0 +1,132 @@
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.form-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  width: 100%;
+  max-width: 400px;
+}
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.login-form span {
+  color: #2a5298;
+}
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.input-group input {
+  width: 100%;
+  padding: 1rem 0.5rem;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  background: transparent;
+}
+.input-group label {
+  position: absolute;
+  top: 1rem;
+  left: 0.5rem;
+  color: #999;
+  pointer-events: none;
+  transition: 0.3s;
+}
+.input-group input:focus + label,
+.input-group input:valid + label {
+  top: -0.5rem;
+  left: 0;
+  font-size: 0.75rem;
+  color: #2a5298;
+}
+.btn {
+  background: #2a5298;
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  width: 100%;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.btn:hover {
+  background: #1e3c72;
+}
+.toggle-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+
+/* === Animations & Visual Effects === */
+.task-card {
+  transition: all 0.3s ease;
+  transform-origin: center;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.task-card:hover {
+  transform: scale(1.02);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* === Toast Notification === */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #222;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  font-size: 0.9rem;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === Dark Mode === */
+body.dark {
+  background: linear-gradient(135deg, #1c1c1c, #2a2a2a);
+  color: #eee;
+}
+
+body.dark .task-card {
+  background-color: rgba(255,255,255,0.05);
+}
+
+body.dark .btn {
+  background: #444;
+  color: #eee;
+}
+
+body.dark .progress-bar {
+  background: #6ee7b7;
+}

@@ -1,0 +1,63 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Django-specific
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# dotenv
+.env
+*.env
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Test/coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# MySQL dump or other sensitive files
+*.sql
+*.dump
+
+# Pipenv or Poetry
+Pipfile.lock
+poetry.lock
+
+# Node (if used for frontend)
+node_modules/
+npm-debug.log
+yarn-error.log

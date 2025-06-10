@@ -1,0 +1,37 @@
+
+# Add to INSTALLED_APPS
+INSTALLED_APPS += [
+    'rest_framework',
+    'corsheaders',
+    'users',
+    'tasks',
+]
+
+MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+# MySQL config (update these values as needed)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'zentask_db',
+        'USER': 'your_mysql_user',
+        'PASSWORD': 'your_mysql_password',
+        'HOST': 'your_mysql_host',
+        'PORT': '3306',
+    }
+}
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True
+
+# REST Framework + JWT setup
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}

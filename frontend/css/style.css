@@ -1,0 +1,21 @@
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+  transition: background 0.3s ease;
+}
+body.dark-mode {
+  background: linear-gradient(to right, #232526, #414345);
+  color: white;
+}
+header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
