@@ -1,5 +1,4 @@
-
-const API_URL = "https://your-backend-url.com"; // Replace with actual deployed backend URL
+const API_URL = "https://zentask-mlne.onrender.com";
 
 // Save and get token
 function saveToken(token) {
