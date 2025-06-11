@@ -1,1 +1,1 @@
-web: gunicorn backend.zenTask.wsgi:application
+web: gunicorn zentask.wsgi:application

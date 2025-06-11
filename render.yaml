@@ -3,11 +3,15 @@ services:
     name: zentask-backend
     env: python
     buildCommand: "pip install -r backend/requirements.txt && python backend/manage.py collectstatic --noinput"
-    startCommand: "gunicorn backend.zentask.wsgi:application"
+    startCommand: "gunicorn zentask.wsgi:application"
     envVars:
       - key: DJANGO_SECRET_KEY
         fromDotEnv: true
       - key: DEBUG
+        fromDotEnv: true
+      - key: ALLOWED_HOSTS
+        fromDotEnv: true
+      - key: DATABASE_URL
         fromDotEnv: true
       - key: MYSQL_DATABASE
         fromDotEnv: true
@@ -18,6 +22,4 @@ services:
       - key: MYSQL_HOST
         fromDotEnv: true
       - key: MYSQL_PORT
-        fromDotEnv: true
-      - key: ALLOWED_HOSTS
         fromDotEnv: true
