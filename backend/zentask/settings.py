@@ -62,19 +62,21 @@ TEMPLATES = [
 WSGI_APPLICATION = "zentask.wsgi.application"
 
 # DATABASE CONFIGURATION
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.getenv("MYSQL_DATABASE", "zentask_db"),
-        "USER": os.getenv("MYSQL_USER", "user"),
-        "PASSWORD": os.getenv("MYSQL_PASSWORD", "password"),
-        "HOST": os.getenv("MYSQL_HOST", "localhost"),
-        "PORT": os.getenv("MYSQL_PORT", "3306"),
+if os.getenv("DATABASE_URL"):
+    DATABASES = {
+        "default": dj_database_url.config(conn_max_age=600, ssl_require=not DEBUG)
     }
-}
-
-if not DEBUG:
-    DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": os.getenv("MYSQL_DATABASE", "zentask_db"),
+            "USER": os.getenv("MYSQL_USER", "user"),
+            "PASSWORD": os.getenv("MYSQL_PASSWORD", "password"),
+            "HOST": os.getenv("MYSQL_HOST", "localhost"),
+            "PORT": os.getenv("MYSQL_PORT", "3306"),
+        }
+    }
 
 # AUTH
 AUTH_PASSWORD_VALIDATORS = []  # Customize for production
@@ -105,6 +107,3 @@ REST_FRAMEWORK = {
 
 # CORS
 CORS_ALLOW_ALL_ORIGINS = True
-
-
-AUTH_USER_MODEL = 'users.CustomUser'
