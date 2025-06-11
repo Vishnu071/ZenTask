@@ -19,4 +19,4 @@ COPY . .
 RUN python manage.py collectstatic --noinput
 
 # Start Gunicorn server
-CMD ["gunicorn", "zentask.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "backend.zentask.wsgi:application", "--bind", "0.0.0.0:8000"]
