@@ -3,7 +3,7 @@ services:
     name: zentask-backend
     env: python
     buildCommand: "pip install -r backend/requirements.txt && python backend/manage.py collectstatic --noinput"
-    startCommand: "gunicorn zentask.wsgi:application"
+    startCommand: "gunicorn backend.zentask.wsgi:application"
     envVars:
       - key: DJANGO_SECRET_KEY
         fromDotEnv: true
