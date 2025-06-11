@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: zentask-backend
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn zentask.wsgi:application"
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        fromDotEnv: true
+      - key: DEBUG
+        fromDotEnv: true
+      - key: MYSQL_DATABASE
+        fromDotEnv: true
+      - key: MYSQL_USER
+        fromDotEnv: true
+      - key: MYSQL_PASSWORD
+        fromDotEnv: true
+      - key: MYSQL_HOST
+        fromDotEnv: true
+      - key: MYSQL_PORT
+        fromDotEnv: true
