@@ -1,1 +1,1 @@
-web: gunicorn backend.zentask.wsgi:application
+PYTHONPATH=backend gunicorn zentask.wsgi:application
