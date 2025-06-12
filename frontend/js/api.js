@@ -2,26 +2,30 @@ const API_URL = "https://zentask-mlne.onrender.com";
 
 // Save and get token
 function saveToken(token) {
-  localStorage.setItem("access", token);
+  localStorage.setItem("token", token);
 }
 
 function getToken() {
-  return localStorage.getItem("access");
+  return localStorage.getItem("token");
 }
 
 // Login
 async function login(username, password) {
-  const res = await fetch(`${API_URL}/api/token/`, {
+  try {
+    const res = await fetch(`${API_URL}/api/token/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
   });
-  const data = await res.json();
+      const data = await res.json();
   if (data.access) {
     saveToken(data.access);
     return true;
   }
-  return false;
+  } catch (err) {
+    console.error('Login failed:', err);
+    return false;
+}
 }
 
 // Register

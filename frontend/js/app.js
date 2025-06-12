@@ -116,3 +116,10 @@ window.onload = () => {
   }
   loadTasks();
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  const addBtn = document.getElementById("addTaskBtn");
+  if (addBtn) {
+    addBtn.addEventListener("click", addTask);
+  }
+});
