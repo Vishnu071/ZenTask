@@ -1,30 +1,363 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Profile - ZenTask</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body class="login-body">
-  <div class="form-container">
-    <form class="login-form" id="profileForm" enctype="multipart/form-data">
-      <h2>My <span>Profile</span></h2>
-      <div class="input-group">
-        <input type="text" name="username" value="YourUsername" required />
-        <label>Username</label>
-      </div>
-      <div class="input-group">
-        <input type="email" name="email" value="user@example.com" required />
-        <label>Email</label>
-      </div>
-      <div class="input-group">
-        <input type="file" name="avatar" />
-        <label style="top:-0.5rem; font-size:0.75rem;">Upload Avatar</label>
-      </div>
-      <button type="submit" class="btn login-btn">Save Profile</button>
-    </form>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZenTask - Profile</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap");
+      @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+      :root {
+        --clr-primary: #7f00ff;
+        --clr-secondary: #00f7ff;
+        --clr-bg-light: #f5f7fa;
+        --clr-bg-dark: #1e1e2f;
+        --clr-text-light: #222;
+        --clr-text-dark: #ddd;
+        --transition-speed: 0.3s;
+        --border-radius: 12px;
+        --font-family: "Inter", sans-serif;
+        --header-height: 64px;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-family);
+        background: var(--clr-bg-light);
+        color: var(--clr-text-light);
+        transition: background-color var(--transition-speed),
+          color var(--transition-speed);
+        user-select: none;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      body.dark-mode {
+        background: var(--clr-bg-dark);
+        color: var(--clr-text-dark);
+      }
+
+      header {
+        height: var(--header-height);
+        background: linear-gradient(
+          90deg,
+          var(--clr-primary),
+          var(--clr-secondary)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        color: white;
+        font-weight: 700;
+        font-size: 1.5rem;
+        user-select: none;
+        flex-shrink: 0;
+      }
+
+      #mode-toggle {
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        padding: 8px;
+        border-radius: 6px;
+        transition: background-color 0.3s ease;
+      }
+      #mode-toggle:hover {
+        background: rgba(255 255 255 / 0.15);
+      }
+
+      main {
+        flex-grow: 1;
+        max-width: 720px;
+        margin: 40px auto 60px auto;
+        padding: 0 16px;
+      }
+
+      h2 {
+        font-weight: 800;
+        font-size: 2rem;
+        margin-bottom: 24px;
+        background: linear-gradient(
+          90deg,
+          var(--clr-primary),
+          var(--clr-secondary)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .profile-section {
+        background: rgba(255 255 255 / 0.15);
+        backdrop-filter: blur(15px);
+        border-radius: var(--border-radius);
+        padding: 32px 24px;
+        box-shadow: 0 8px 30px rgba(127, 0, 255, 0.3);
+      }
+
+      .profile-picture-container {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .profile-picture {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: #ccc;
+        background-position: center;
+        background-size: cover;
+        margin: 0 auto 16px auto;
+        border: 5px solid var(--clr-primary);
+        transition: box-shadow 0.3s ease;
+      }
+
+      .profile-picture:hover {
+        box-shadow: 0 0 20px var(--clr-secondary);
+      }
+
+      #profile-picture-input {
+        display: none;
+      }
+
+      .btn-upload {
+        background: var(--clr-primary);
+        color: white;
+        border: none;
+        border-radius: 24px;
+        padding: 10px 24px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-upload:hover {
+        background: var(--clr-secondary);
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      label {
+        font-weight: 600;
+        font-size: 1rem;
+      }
+
+      input[type="text"],
+      input[type="email"] {
+        padding: 12px 16px;
+        border-radius: var(--border-radius);
+        border: 1px solid #ccc;
+        font-size: 1rem;
+        transition: border-color 0.2s ease;
+        outline-offset: 3px;
+        outline-color: transparent;
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus {
+        border-color: var(--clr-primary);
+        box-shadow: 0 0 8px var(--clr-primary);
+      }
+
+      .btn-save {
+        margin-top: 8px;
+        background: linear-gradient(
+          90deg,
+          var(--clr-primary),
+          var(--clr-secondary)
+        );
+        color: white;
+        border: none;
+        padding: 14px 0;
+        border-radius: var(--border-radius);
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        box-shadow: 0 5px 20px rgba(127, 0, 255, 0.4);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        user-select: none;
+      }
+
+      .btn-save:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 35px rgba(127, 0, 255, 0.7);
+      }
+
+      .btn-save:active {
+        transform: scale(0.95);
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        main {
+          margin: 24px auto 40px auto;
+          padding: 0 12px;
+        }
+
+        .profile-picture {
+          width: 120px;
+          height: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body class="light-mode">
+    <header>
+      <div>ZenTask Profile</div>
+      <button
+        id="mode-toggle"
+        aria-label="Toggle dark or light mode"
+        title="Toggle dark or light mode"
+      >
+        <span class="material-icons">brightness_6</span>
+      </button>
+    </header>
+
+    <main role="main">
+      <h2>My Profile</h2>
+      <section class="profile-section" aria-label="Profile information">
+        <div class="profile-picture-container">
+          <div
+            class="profile-picture"
+            id="profile-picture"
+            role="img"
+            aria-label="User profile picture"
+            tabindex="0"
+            style="
+              background-image: url('https://placehold.co/160x160?text=Profile');
+            "
+          ></div>
+          <label
+            for="profile-picture-input"
+            class="btn-upload"
+            tabindex="0"
+            role="button"
+            aria-haspopup="dialog"
+            aria-controls="profile-picture-input"
+          >
+            <span class="material-icons" aria-hidden="true">cloud_upload</span>
+            Upload Picture
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            id="profile-picture-input"
+            aria-label="Upload profile picture"
+          />
+        </div>
+
+        <form id="profile-form" novalidate autocomplete="off">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            aria-required="true"
+            placeholder="Username"
+            value="john_doe"
+          />
+
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            aria-required="true"
+            placeholder="Email address"
+            value="john@example.com"
+          />
+
+          <button
+            type="submit"
+            class="btn-save"
+            aria-live="polite"
+            aria-label="Save profile"
+          >
+            Save Profile
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      // Dark/light mode toggle with persistence
+      const modeToggleBtn = document.getElementById("mode-toggle");
+      const body = document.body;
+
+      function setMode(mode) {
+        if (mode === "dark") {
+          body.classList.add("dark-mode");
+          body.classList.remove("light-mode");
+        } else {
+          body.classList.add("light-mode");
+          body.classList.remove("dark-mode");
+        }
+        localStorage.setItem("mode", mode);
+      }
+
+      modeToggleBtn.addEventListener("click", () => {
+        if (body.classList.contains("dark-mode")) {
+          setMode("light");
+        } else {
+          setMode("dark");
+        }
+      });
+
+      const savedMode = localStorage.getItem("mode");
+      if (savedMode) {
+        setMode(savedMode);
+      } else {
+        setMode("light");
+      }
+
+      // Profile picture upload and preview
+      const profilePicInput = document.getElementById("profile-picture-input");
+      const profilePicDiv = document.getElementById("profile-picture");
+
+      profilePicInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            profilePicDiv.style.backgroundImage = `url('${e.target.result}')`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Simulated save profile
+      const profileForm = document.getElementById("profile-form");
+      profileForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = profileForm.username.value.trim();
+        const email = profileForm.email.value.trim();
+
+        if (!username || !email) {
+          alert("Please fill out all fields.");
+          return;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert("Please enter a valid email address.");
+          return;
+        }
+
+        alert("Profile saved successfully!");
+      });
+    </script>
+  </body>
 </html>

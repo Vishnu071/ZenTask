@@ -1,48 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register - ZenTask</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body class="login-body">
-  <div class="form-container">
-    <form class="login-form" id="registerForm">
-      <h2>Create your <span>ZenTask</span> account</h2>
-      <div class="input-group">
-        <input type="text" name="username" required />
-        <label>Username</label>
-      </div>
-      <div class="input-group">
-        <input type="email" name="email" required />
-        <label>Email</label>
-      </div>
-      <div class="input-group">
-        <input type="password" name="password" required />
-        <label>Password</label>
-      </div>
-      <button type="submit" class="btn login-btn">Register</button>
-      <p class="toggle-link">Already have an account? <a href="login.html">Login</a></p>
-    </form>
-  </div>
-  <audio id="registerSound" src="click.mp3" preload="auto"></audio>
-  <script src="js/api.js"></script>
-  <script>
-    document.querySelector('#registerForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      document.getElementById('registerSound').play();
-      const username = this.username.value;
-      const email = this.email.value;
-      const password = this.password.value;
-      const success = await register(username, email, password);
-      if (success) {
-        alert("Registration successful! Please log in.");
-        window.location.href = "login.html";
-      } else {
-        alert("Registration failed.");
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZenTask - Register</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap");
+
+      :root {
+        --clr-primary: #7f00ff;
+        --clr-secondary: #00f7ff;
+        --clr-bg-light: #f5f7fa;
+        --clr-bg-dark: #1e1e2f;
+        --clr-text-light: #222;
+        --clr-text-dark: #ddd;
+        --transition-speed: 0.3s;
+        --border-radius: 12px;
+        --font-family: "Inter", sans-serif;
+        --btn-height: 48px;
       }
-    });
-  </script>
-</body>
+
+      /* Dark mode prefers */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --clr-bg: var(--clr-bg-dark);
+          --clr-text: var(--clr-text-dark);
+        }
+      }
+      :root {
+        --clr-bg: var(--clr-bg-light);
+        --clr-text: var(--clr-text-light);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: var(--font-family);
+      }
+
+      html,
+      body {
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          var(--clr-primary),
+          var(--clr-secondary)
+        );
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: var(--clr-text);
+        overflow-x: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        scroll-behavior: smooth;
+      }
+
+      @keyframes gradientBG {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .register-container {
+        background: rgba(255 255 255 / 0.15);
+        backdrop-filter: blur(15px);
+        border-radius: var(--border-radius);
+        padding: 48px 32px;
+        max-width: 420px;
+        width: 90vw;
+        box-shadow: 0 8px 30px rgba(127, 0, 255, 0.35);
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+        transform: translateY(50px);
+        user-select: none;
+        position: relative;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .register-header {
+        font-size: 2.6rem;
+        font-weight: 800;
+        margin-bottom: 32px;
+        background: linear-gradient(
+          90deg,
+          var(--clr-primary),
+          var(--clr-secondary)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      label {
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 6px;
+        display: block;
+        color: var(--clr-text);
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        height: var(--btn-height);
+        border-radius: var(--border-radius);
+        border: none;
+        padding: 0 16px;
+        font-size: 1rem;
+        transition: box-shadow var(--transition-speed),
+          background-color var(--transition-speed);
+        outline-offset: 3px;
+        outline-color: transparent;
+      }
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="password"]:focus {
+        outline-color: var(--clr-primary);
+        box-shadow: 0 0 10px var(--clr-primary);
+        background-color: #fff;
+        color: #000;
+      }
+
+      .btn-register {
+        height: var(--btn-height);
+        border-radius: var(--border-radius);
+        border: none;
+        background: linear-gradient(
+          90deg,
+          var(--clr-primary),
+          var(--clr-secondary)
+        );
+        color: white;
+        font-weight: 700;
+        font-size: 1.2rem;
+        cursor: pointer;
+        box-shadow: 0 5px 20px rgba(127, 0, 255, 0.4);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        user-select: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-register:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 35px rgba(127, 0, 255, 0.7);
+      }
+
+      .btn-register:active {
+        transform: scale(0.95);
+      }
+
+      .login-link {
+        margin-top: 16px;
+        text-align: center;
+        font-size: 1rem;
+        color: var(--clr-text);
+      }
+      .login-link a {
+        color: #7f00ff;
+        font-weight: 600;
+        text-decoration: none;
+        transition: text-decoration var(--transition-speed);
+      }
+      .login-link a:hover,
+      .login-link a:focus {
+        text-decoration: underline;
+      }
+
+      #mode-toggle {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(255 255 255 / 0.25);
+        border: none;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-weight: 600;
+        color: var(--clr-text);
+        cursor: pointer;
+        box-shadow: 0 2px 12px rgba(255 255 255 / 0.15);
+        transition: background-color var(--transition-speed);
+        user-select: none;
+      }
+      #mode-toggle:hover {
+        background: rgba(255 255 255 / 0.55);
+      }
+
+      .input-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--clr-primary);
+        pointer-events: none;
+        user-select: none;
+        opacity: 0.7;
+        transition: color var(--transition-speed);
+        font-size: 20px;
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        padding-left: 44px;
+      }
+
+      @media screen and (max-width: 480px) {
+        .register-container {
+          padding: 32px 20px;
+          width: 95vw;
+        }
+        .register-header {
+          font-size: 2rem;
+        }
+        .btn-register {
+          font-size: 1rem;
+          height: 44px;
+        }
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="light-mode">
+    <button id="mode-toggle" aria-label="Toggle dark or light mode">
+      Switch Mode
+    </button>
+
+    <main class="register-container" role="main" aria-label="Register form">
+      <h1 class="register-header">Create ZenTask Account</h1>
+      <form id="register-form" novalidate autocomplete="off">
+        <div class="input-wrapper">
+          <span class="material-icons input-icon" aria-hidden="true"
+            >person</span
+          >
+          <label for="username">Username</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            required
+            aria-required="true"
+            autocomplete="username"
+            placeholder="Choose your username"
+          />
+        </div>
+        <div class="input-wrapper">
+          <span class="material-icons input-icon" aria-hidden="true"
+            >email</span
+          >
+          <label for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            aria-required="true"
+            autocomplete="email"
+            placeholder="Your email address"
+          />
+        </div>
+        <div class="input-wrapper">
+          <span class="material-icons input-icon" aria-hidden="true">lock</span>
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            aria-required="true"
+            autocomplete="new-password"
+            placeholder="Create a password"
+            minlength="8"
+          />
+        </div>
+        <div class="input-wrapper">
+          <span class="material-icons input-icon" aria-hidden="true">lock</span>
+          <label for="confirm_password">Confirm Password</label>
+          <input
+            id="confirm_password"
+            name="confirm_password"
+            type="password"
+            required
+            aria-required="true"
+            autocomplete="new-password"
+            placeholder="Confirm your password"
+            minlength="8"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="btn-register"
+          aria-live="polite"
+          aria-label="Submit registration form"
+        >
+          Register
+        </button>
+      </form>
+      <p class="login-link">
+        Already have an account?
+        <a href="login.html">Login here</a>
+      </p>
+    </main>
+
+    <script>
+      // Dark/Light Mode Toggle with localStorage persistence
+      const modeToggleBtn = document.getElementById("mode-toggle");
+      const body = document.body;
+
+      function setMode(mode) {
+        if (mode === "dark") {
+          body.classList.add("dark-mode");
+          body.classList.remove("light-mode");
+        } else {
+          body.classList.add("light-mode");
+          body.classList.remove("dark-mode");
+        }
+        localStorage.setItem("mode", mode);
+      }
+
+      modeToggleBtn.addEventListener("click", () => {
+        if (body.classList.contains("dark-mode")) {
+          setMode("light");
+        } else {
+          setMode("dark");
+        }
+      });
+
+      const savedMode = localStorage.getItem("mode");
+      if (savedMode) {
+        setMode(savedMode);
+      } else {
+        setMode("light");
+      }
+
+      // Registration validation and submission simulation
+      const registerForm = document.getElementById("register-form");
+      registerForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = registerForm.username.value.trim();
+        const email = registerForm.email.value.trim();
+        const password = registerForm.password.value;
+        const confirmPassword = registerForm.confirm_password.value;
+
+        if (!username || !email || !password || !confirmPassword) {
+          alert("Please fill out all fields.");
+          return;
+        }
+        if (password.length < 8) {
+          alert("Password must be at least 8 characters.");
+          return;
+        }
+        if (password !== confirmPassword) {
+          alert("Passwords do not match.");
+          return;
+        }
+        // Basic email Regex validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert("Please enter a valid email address.");
+          return;
+        }
+        const btn = registerForm.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = "Registering…";
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = "Register";
+          alert(
+            "Registration successful! You will be redirected to login page."
+          );
+          window.location.href = "login.html";
+        }, 2500);
+      });
+    </script>
+  </body>
 </html>
